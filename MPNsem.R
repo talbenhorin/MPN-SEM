@@ -6,7 +6,9 @@ MPN <- read.csv("oysterMPN.csv", fill = FALSE, header = TRUE)
 
 library(lavaan)
 
-oyster.df <- data.frame(chlo = MPN$chlo,temp = MPN$s.temp,sal = MPN$s.sal, water = MPN$s.tlh,oyster = MPN$log.tlh)
+oyster.df <- data.frame(chlo = MPN$chlo,temp = MPN$s.temp,
+                        sal = MPN$s.sal, water = MPN$water.log.tlh,
+                        oyster = MPN$log.tlh)
 
 model <- 'oyster ~ temp + sal + chlo + water
           water ~ temp + sal + chlo
