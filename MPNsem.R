@@ -6,17 +6,22 @@ MPN <- read.csv("oysterMPN.csv", fill = FALSE, header = TRUE)
 
 library(lavaan)
 
-oyster.df <- data.frame(chlo = MPN$chlo,temp = MPN$s.temp,
-                        sal = MPN$s.sal, water = MPN$water.log.pilf,
-                        oyster = MPN$log.pilf)
+oyster.df <- data.frame(pheo = MPN$pheo,
+                        chlo = MPN$chlo,
+                        turb = MPN$turb,
+                        temp = MPN$s.temp,
+                        sal = MPN$s.sal, 
+                        water = MPN$water.log.vvha,
+                        oyster = MPN$log.vvha)
 
-model <- 'oyster ~ temp + sal + chlo + water
-          water ~ temp + sal + chlo
+model <- 'oyster ~ temp + sal + water
+          water ~ temp + sal 
 '
 
 path.fit <- sem(model,
                 meanstructure=T,
                 data=oyster.df)
+AIC(path.fit)
 summary(path.fit)
 semPlot::semPaths(path.fit,what = "std",
                   whatLabels = "std",
