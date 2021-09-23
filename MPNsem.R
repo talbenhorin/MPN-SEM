@@ -9,13 +9,13 @@ library(lavaan)
 oyster.df <- data.frame(pheo = MPN$pheo,
                         chlo = MPN$chlo,
                         turb = MPN$turb,
-                        temp = MPN$s.temp,
-                        sal = MPN$s.sal, 
-                        water = MPN$water.log.vvha,
-                        oyster = MPN$log.vvha)
+                        temp = MPN$temp,
+                        sal = MPN$sal, 
+                        water = MPN$water.log.tdh,
+                        oyster = MPN$log.tdh)
 
-model <- 'oyster ~ temp + sal + water
-          water ~ temp + sal 
+model <- 'oyster ~ temp + turb + water
+          water ~ temp + turb
 '
 
 path.fit <- sem(model,
@@ -31,7 +31,6 @@ semPlot::semPaths(path.fit,what = "std",
                   nCharNodes = 0,
                   edge.label.cex = 0.8,
                   residuals = FALSE,
-                  pastel = TRUE,
                   fade = TRUE,
                   cardinal = FALSE,
                   centerLevels = TRUE)
