@@ -11,11 +11,11 @@ oyster.df <- data.frame(pheo = MPN$pheo,
                         turb = MPN$turb,
                         temp = MPN$temp,
                         sal = MPN$sal, 
-                        water = MPN$water.log.tdh,
-                        oyster = MPN$log.tdh)
+                        water = MPN$water.log.trh,
+                        oyster = MPN$log.trh)
 
-model <- 'oyster ~ temp + turb + water
-          water ~ temp + turb
+model <- 'oyster ~ temp + sal + chlo + water
+          water ~ temp + sal 
 '
 
 path.fit <- sem(model,
