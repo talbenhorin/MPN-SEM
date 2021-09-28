@@ -11,21 +11,22 @@ oyster.df <- data.frame(pheo = MPN$pheo,
                         turb = MPN$turb,
                         temp = MPN$temp,
                         sal = MPN$sal, 
-                        water = MPN$water.log.trh,
-                        oyster = MPN$log.trh)
+                        water = MPN$water.log.tlh,
+                        oyster = MPN$log.tlh)
 
-model <- 'oyster ~ temp + sal + chlo + water
-          water ~ temp + sal 
+model <- 'water ~ temp + sal + pheo
+          oyster ~ water + sal 
+          water ~~ oyster
 '
-
 path.fit <- sem(model,
                 meanstructure=T,
                 data=oyster.df)
-AIC(path.fit)
+
+fitMeasures(path.fit,c("npar","chisq","pvalue","aic"))
 summary(path.fit)
 semPlot::semPaths(path.fit,what = "std",
                   whatLabels = "std",
-                  layout = "tree3",
+                  layout = "circle2",
                   curvature = 2,
                   intercepts = FALSE,
                   nCharNodes = 0,
