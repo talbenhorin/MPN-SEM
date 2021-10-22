@@ -11,27 +11,34 @@ oyster.df <- data.frame(pheo = MPN$pheo,
                         turb = MPN$turb,
                         temp = MPN$temp,
                         sal = MPN$sal, 
-                        water = MPN$water.log.trh,
-                        oyster = MPN$log.trh)
+                        water = MPN$water.log.vvha,
+                        oyster = MPN$log.vvha)
 
-model <- 'water ~ temp + sal + pheo
+model <- 'water ~ temp + sal + chlo
           oyster ~ water + sal
-          water ~~ oyster
 '
+
 path.fit <- sem(model,
                 meanstructure=T,
                 data=oyster.df)
 
 fitMeasures(path.fit,c("npar","chisq","pvalue","aic"))
-summary(path.fit)
+#summary(path.fit)
+parameterEstimates(path.fit,
+                   se = FALSE, zstat = FALSE, pvalue = FALSE, ci = FALSE,
+                   standardized = FALSE,
+                   fmi = FALSE, level = 0.95, boot.ci.type = "perc",
+                   cov.std = TRUE, fmi.options = list(),
+                   rsquare = TRUE)
 semPlot::semPaths(path.fit,what = "std",
                   whatLabels = "std",
-                  layout = "circle2",
+                  layout = "tree",
                   curvature = 2,
                   intercepts = FALSE,
+                  edge.color = rgb(0, 0, 0, maxColorValue = 255),
                   nCharNodes = 0,
                   edge.label.cex = 0.8,
                   residuals = FALSE,
-                  fade = TRUE,
+                  fade = FALSE,
                   cardinal = FALSE,
                   centerLevels = TRUE)
