@@ -11,11 +11,11 @@ oyster.df <- data.frame(pheo = MPN$pheo,
                         turb = MPN$turb,
                         temp = MPN$temp,
                         sal = MPN$sal, 
-                        water = MPN$water.log.tlh,
-                        oyster = MPN$log.tlh)
+                        water = MPN$water.log.tdh,
+                        oyster = MPN$log.tdh)
 
-model <- 'water ~ temp + sal
-          oyster ~ temp + sal
+model <- 'water ~ temp + sal + turb
+          oyster ~ water + sal
           water ~~ oyster
 '
 
