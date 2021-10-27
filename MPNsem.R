@@ -4,19 +4,18 @@ MPN <- read.csv("oysterMPN.csv", fill = FALSE, header = TRUE)
 # install.packages("lavaan", dependencies = TRUE)
 # install.packages("semPlot", dependencies = TRUE)
 
-library(lavaan)
+#library(lavaan)
 
-oyster.df <- data.frame(pheo = MPN$pheo,
-                        chlo = MPN$chlo,
-                        turb = MPN$turb,
-                        temp = MPN$temp,
+oyster.df <- data.frame(temp = MPN$temp,
                         sal = MPN$sal, 
-                        water = MPN$water.log.tdh,
-                        oyster = MPN$log.tdh)
+                        water = MPN$water.log.vvha,
+                        oyster = MPN$log.vvha,
+                        turb = MPN$turb,
+                        chlo = MPN$chlo)
 
-model <- 'water ~ temp + sal + turb
-          oyster ~ water + sal
-          water ~~ oyster
+model <- 'water ~ 1 + temp + sal 
+          oyster ~ 1 + temp + sal
+          water~~oyster
 '
 
 path.fit <- sem(model,
@@ -24,7 +23,7 @@ path.fit <- sem(model,
                 data=oyster.df)
 
 fitMeasures(path.fit,c("npar","chisq","pvalue","aic"))
-#summary(path.fit)
+summary(path.fit)
 parameterEstimates(path.fit,
                    se = FALSE, zstat = FALSE, pvalue = FALSE, ci = FALSE,
                    standardized = FALSE,
