@@ -18,9 +18,7 @@ model <- 'water ~ 1 + temp + sal
           water~~oyster
 '
 
-path.fit <- sem(model,
-                meanstructure=T,
-                data=oyster.df)
+path.fit <- sem(model,data=oyster.df)
 
 fitMeasures(path.fit,c("npar","chisq","pvalue","aic"))
 summary(path.fit)
