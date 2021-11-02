@@ -1,27 +1,33 @@
 rm(list=ls(all=TRUE))
 set.seed(1234)
-MPN <- read.csv("oysterMPN.csv", fill = FALSE, header = TRUE) 
+MPN <- read.csv("oysterMPNstd.csv", fill = FALSE, header = TRUE) 
 # install.packages("lavaan", dependencies = TRUE)
 # install.packages("semPlot", dependencies = TRUE)
 
-#library(lavaan)
+library(lavaan)
 
 oyster.df <- data.frame(temp = MPN$temp,
-                        sal = MPN$sal, 
-                        water = MPN$water.log.vvha,
-                        oyster = MPN$log.vvha,
+                        sal = MPN$sal,
+                        sal2 = MPN$sal2,
+                        water = MPN$water.log.tlh,
+                        oyster = MPN$log.tlh,
                         turb = MPN$turb,
-                        chlo = MPN$chlo)
+                        chlo = MPN$chlo,
+                        pheo = MPN$pheo)
 
-model <- 'water ~ 1 + temp + sal 
-          oyster ~ 1 + temp + sal
-          water~~oyster
+model <- '
+  # regressions
+    water ~ 1 + temp + sal + sal2 + chlo
+    oyster ~ 1 + water
+
+  # covariance
+    water~~oyster
 '
 
 path.fit <- sem(model,data=oyster.df)
 
 fitMeasures(path.fit,c("npar","chisq","pvalue","aic"))
-summary(path.fit)
+summary(path.fit,standardized=TRUE, fit.measures=TRUE)
 parameterEstimates(path.fit,
                    se = FALSE, zstat = FALSE, pvalue = FALSE, ci = FALSE,
                    standardized = FALSE,
@@ -30,8 +36,7 @@ parameterEstimates(path.fit,
                    rsquare = TRUE)
 semPlot::semPaths(path.fit,what = "std",
                   whatLabels = "std",
-                  layout = "tree",
-                  curvature = 2,
+                  layout = "tree3",
                   intercepts = FALSE,
                   edge.color = rgb(0, 0, 0, maxColorValue = 255),
                   nCharNodes = 0,
