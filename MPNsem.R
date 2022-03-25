@@ -9,16 +9,16 @@ library(lavaan)
 oyster.df <- data.frame(temp = MPN$temp,
                         sal = MPN$sal,
                         sal2 = MPN$sal2,
-                        water = MPN$water.log.tlh,
-                        oyster = MPN$log.tlh,
+                        water = MPN$water.log.vvha,
+                        oyster = MPN$log.vvha,
                         turb = MPN$turb,
                         chlo = MPN$chlo,
                         pheo = MPN$pheo)
 
 model <- '
   # regressions
-    water ~ 1 + temp + sal + sal2 + chlo
-    oyster ~ 1 + water
+    water ~ 1 + temp + sal + turb
+    oyster ~ 1 + water + temp
 
   # covariance
     water~~oyster
@@ -36,7 +36,7 @@ parameterEstimates(path.fit,
                    rsquare = TRUE)
 semPlot::semPaths(path.fit,what = "std",
                   whatLabels = "std",
-                  layout = "tree3",
+                  layout = "circle2",
                   intercepts = FALSE,
                   edge.color = rgb(0, 0, 0, maxColorValue = 255),
                   nCharNodes = 0,
