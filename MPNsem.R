@@ -9,15 +9,15 @@ library(lavaan)
 oyster.df <- data.frame(temp = MPN$temp,
                         sal = MPN$sal,
                         sal2 = MPN$sal2,
-                        water = MPN$water.log.tlh,
-                        oyster = MPN$log.tlh,
+                        water = MPN$water.log.trh,
+                        oyster = MPN$log.trh,
                         turb = MPN$turb,
                         chlo = MPN$chlo,
                         pheo = MPN$pheo)
 
 model <- '
   # regressions
-    water ~ 1 + temp + sal + sal2 + chlo
+    water ~ 1 + temp + sal + sal2 + turb
     oyster ~ 1 + temp + sal + sal2
 
   # covariance
