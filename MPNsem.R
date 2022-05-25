@@ -18,7 +18,7 @@ oyster.df <- data.frame(temp = MPN$temp,
 model <- '
   # regressions
     water ~ 1 + temp + sal + sal2 + turb
-    oyster ~ 1 + temp + sal + sal2
+    oyster ~ 1 + water + temp
 
   # covariance
     water~~oyster
